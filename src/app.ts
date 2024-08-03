@@ -12,7 +12,7 @@ const app=express();
 
 //middlewares
 app.use(cors({
-    origin:["http://localhost:5173","https://front-end-mern-chat-bot.vercel.app","https://front-end-mern-chat-bot-prw2.vercel.app"],
+    origin:["http://localhost:5173","https://front-end-mern-chat-bot.vercel.app","https://front-end-mern-chat-bot-prw2.vercel.app/"],
     credentials:true,
 }));
 app.use(express.json());
