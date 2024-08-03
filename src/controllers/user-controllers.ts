@@ -4,6 +4,20 @@ import {hash,compare} from 'bcrypt'
 import { createToken } from '../utils/token-manager.js';
 import { COOKIE_NAME } from '../utils/constants.js';
 
+export const getAuthToken = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Retrieve the token from cookies
+        const token = req.cookies[COOKIE_NAME];
+        if (!token) {
+            return res.status(401).json({ message: 'No token found' });
+        }
+        return res.status(200).json({ token });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error', cause: error.message });
+    }
+};
+
 export const getAllUsers = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const users = await User.find();
