@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { getAllUsers, userLogin, userLogout, userSignUp, verfiyUser } from '../controllers/user-controllers.js';
+import { getAllUsers, getAuthToken, userLogin, userLogout, userSignUp, verfiyUser } from '../controllers/user-controllers.js';
 import { loginValidator, signupValidator, validate } from '../utils/validators.js';
 import { verifyToken } from '../utils/token-manager.js';
 
@@ -7,6 +7,8 @@ import { verifyToken } from '../utils/token-manager.js';
 const userRoutes=Router();
 
 userRoutes.get("/",getAllUsers);
+
+userRoutes.get("/get-token",getAuthToken);
 
 userRoutes.post("/signup",validate(signupValidator),userSignUp);
 userRoutes.post("/login",validate(loginValidator),userLogin);
