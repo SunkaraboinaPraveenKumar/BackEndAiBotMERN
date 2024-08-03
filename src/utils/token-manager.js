@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -47,14 +47,15 @@ var createToken = function (id, email, expiresIn) {
     return token;
 };
 exports.createToken = createToken;
-var verifyToken = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token;
-    return __generator(this, function (_a) {
-        token = req.signedCookies["".concat(constants_js_1.COOKIE_NAME)];
-        if (!token || token.trim() === "") {
-            return [2 /*return*/, res.status(401).json({ message: 'Token Not Received' })];
-        }
-        return [2 /*return*/, new Promise(function (resolve, reject) {
+var verifyToken = function (req, res, next) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        var token;
+        return __generator(this, function (_a) {
+            token = req.signedCookies["".concat(constants_js_1.COOKIE_NAME)];
+            if (!token || token.trim() === "") {
+                return [2 /*return*/, res.status(401).json({ message: 'Token Not Received' })];
+            }
+            return [2 /*return*/, new Promise(function (resolve, reject) {
                 return jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET, function (err, success) {
                     if (err) {
                         reject(err.message);
@@ -68,6 +69,7 @@ var verifyToken = function (req, res, next) { return __awaiter(void 0, void 0, v
                     }
                 });
             })];
+        });
     });
-}); };
+};
 exports.verifyToken = verifyToken;

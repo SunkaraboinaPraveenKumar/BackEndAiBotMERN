@@ -32,6 +32,7 @@ export const userSignUp = async (req:Request, res:Response, next:NextFunction) =
             httpOnly:true,
             domain:"localhost",
             signed:true,
+            sameSite: 'none',
             path:"/"
         });
 
@@ -73,6 +74,7 @@ export const userLogin = async (req:Request, res:Response, next:NextFunction) =>
             httpOnly:true,
             domain:"localhost",
             signed:true,
+            sameSite: 'none',
             path:"/"
         });
         const token=createToken(user._id.toString(),user.email,"7d")
