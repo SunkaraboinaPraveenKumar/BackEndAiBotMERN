@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { getAllUsers, getAuthToken, userLogin, userLogout, userSignUp, verfiyUser } from '../controllers/user-controllers.js';
+import { getAllUsers, getAuthToken, userLogin, userLogout, userSignUp, verifyUser } from '../controllers/user-controllers.js';
 import { loginValidator, signupValidator, validate } from '../utils/validators.js';
 import { verifyToken } from '../utils/token-manager.js';
 
@@ -12,7 +12,7 @@ userRoutes.get("/get-token",getAuthToken);
 
 userRoutes.post("/signup",validate(signupValidator),userSignUp);
 userRoutes.post("/login",validate(loginValidator),userLogin);
-userRoutes.get("/auth-status",verifyToken,verfiyUser);
+userRoutes.get("/auth-status",verifyToken,verifyUser);
 userRoutes.get("/logout",verifyToken,userLogout);
 
 //middlewares are functions which gets executes before a request is processes

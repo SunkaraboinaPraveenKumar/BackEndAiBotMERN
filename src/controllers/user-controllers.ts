@@ -12,7 +12,7 @@ export const getAuthToken = (req: Request, res: Response, next: NextFunction) =>
     }
     return res.status(200).json({ token });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
@@ -22,7 +22,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
     const users = await User.find();
     return res.status(200).json({ message: 'ok', users });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
@@ -41,16 +41,16 @@ export const userSignUp = async (req: Request, res: Response, next: NextFunction
     const token = createToken(user._id.toString(), user.email, "7d");
     res.cookie(COOKIE_NAME, token, {
       path: "/",
-      domain: process.env.COOKIE_DOMAIN || "localhost", // Use an environment variable for domain
+      domain: process.env.COOKIE_DOMAIN || "localhost",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       httpOnly: true,
       signed: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Adjust based on environment
       secure: process.env.NODE_ENV === 'production', // Only set secure in production
     });
     return res.status(201).json({ message: 'ok', name: user.name, email: user.email });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
@@ -70,22 +70,22 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
     const token = createToken(user._id.toString(), user.email, "7d");
     res.cookie(COOKIE_NAME, token, {
       path: "/",
-      domain: process.env.COOKIE_DOMAIN || "localhost", // Use an environment variable for domain
+      domain: process.env.COOKIE_DOMAIN || "localhost",
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       httpOnly: true,
       signed: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Adjust based on environment
       secure: process.env.NODE_ENV === 'production', // Only set secure in production
     });
   
     return res.status(200).json({ message: 'ok', name: user.name, email: user.email });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
 
-export const verfiyUser = async (req: Request, res: Response, next: NextFunction) => {
+export const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await User.findById(res.locals.jwtData.id);
     if (!user) {
@@ -93,7 +93,7 @@ export const verfiyUser = async (req: Request, res: Response, next: NextFunction
     }
     return res.status(200).json({ message: 'ok', name: user.name, email: user.email });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
@@ -102,13 +102,13 @@ export const userLogout = async (req: Request, res: Response, next: NextFunction
   try {
     res.clearCookie(COOKIE_NAME, {
       path: "/",
-      domain: "localhost", // Change to your domain in production
-      sameSite: 'none',
-      secure: true,
+      domain: process.env.COOKIE_DOMAIN || "localhost",
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Adjust based on environment
+      secure: process.env.NODE_ENV === 'production',
     });
     return res.status(200).json({ message: 'Logout successful' });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
   }
 };
