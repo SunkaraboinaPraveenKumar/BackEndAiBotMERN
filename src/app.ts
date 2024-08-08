@@ -20,21 +20,6 @@ app.use(cors({
 app.use(express.json());
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
-const authenticateToken = (req, res, next) => {
-    const token = req.signedCookies[COOKIE_NAME];
-    if (!token) return res.status(401).json({ message: 'No token found' });
-  
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.status(403).json({ message: 'Token is not valid' });
-      res.locals.jwtData = user;
-      next();
-    });
-  };
-  
-  // Apply middleware globally or to specific routes
-  app.use(authenticateToken);
-
-//remove it in production
 app.use(morgan('dev'));
 
 app.use("/api/v1",appRouter);
