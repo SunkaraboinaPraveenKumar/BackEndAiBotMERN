@@ -6,7 +6,7 @@ import { COOKIE_NAME } from '../utils/constants.js';
 
 export const getAuthToken = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.signedCookies[COOKIE_NAME];
+    const token = req.signedCookies[`${COOKIE_NAME}`];
     if (!token) {
       return res.status(401).json({ message: 'No token found' });
     }
@@ -78,7 +78,7 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
       secure: process.env.NODE_ENV === 'production', // Only set secure in production
     });
   
-    return res.status(200).json({ message: 'ok', name: user.name, email: user.email });
+    return res.status(200).json({ message: 'ok', name: user.name, email: user.email,token:token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error', cause: error.message });
